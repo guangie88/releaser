@@ -23,7 +23,7 @@ steps:
     title: Push Alpine image
     candidate: ${{build_alpine}}
     image_name: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
-    tag: latest
+    tag: alpine_upx-3_ghr-0.12
     when:
       branch:
         only:
