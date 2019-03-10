@@ -1,0 +1,20 @@
+FROM alpine:3.9
+
+ARG ARCH=amd64
+ARG OS=linux
+ARG UPX_VERSION=3.95
+ARG GHR_VERSION=0.12.0
+
+RUN set -euo pipefail && \
+    apk add --no-cache ca-certificates; \
+    # upx installation
+    wget https://github.com/upx/upx/releases/download/v${UPX_VERSION}/upx-${UPX_VERSION}-${ARCH}_${OS}.tar.xz; \
+    tar xvf upx-${UPX_VERSION}-${ARCH}_${OS}.tar.xz; \
+    mv upx-${UPX_VERSION}-${ARCH}_${OS}/upx /usr/local/bin/; \
+    rm -r upx-${UPX_VERSION}-${ARCH}_${OS} upx-${UPX_VERSION}-${ARCH}_${OS}.tar.xz; \
+    # ghr installation
+    wget https://github.com/tcnksm/ghr/releases/download/v${GHR_VERSION}/ghr_v${GHR_VERSION}_${OS}_${ARCH}.tar.gz; \
+    tar xvf ghr_v${GHR_VERSION}_${OS}_${ARCH}.tar.gz; \
+    mv ghr_v${GHR_VERSION}_${OS}_${ARCH}/ghr /usr/local/bin/; \
+    rm -r ghr_v${GHR_VERSION}_${OS}_${ARCH} ghr_v${GHR_VERSION}_${OS}_${ARCH}.tar.gz; \
+    :
