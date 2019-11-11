@@ -1,5 +1,4 @@
 version: '1.0'
-mode: parallel
 steps:
   export_versions:
     title: Export relevant build arguments
@@ -39,11 +38,6 @@ steps:
     - OS=${{OS}}
     - UPX_VERSION=${{UPX_VERSION}}
     - GHR_VERSION=${{GHR_VERSION}}
-    when:
-      steps:
-      - name: main_clone
-        on:
-        - success
 
   push_alpine:
     type: push
@@ -55,7 +49,3 @@ steps:
       branch:
         only:
         - /master/
-      steps:
-      - name: build_alpine
-        on:
-        - success
