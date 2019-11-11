@@ -7,9 +7,9 @@ Dockerfile set-up to contain tools for helping to release binaries.
 The image is based on Alpine and the following packages are installed from
 `apk`:
 
-- ca-certificates
-- curl
-- zip
+- `ca-certificates`
+- `curl`
+- `zip`
 
 Additionally, some helpful external tools are installed:
 
