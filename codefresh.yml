@@ -1,29 +1,42 @@
 version: '1.0'
 mode: parallel
 steps:
-  build_alpine: &build_alpine
+  export_versions:
+    title: Export relevant build arguments
+    image: alpine:3.10
+    commands:
+      - ARCH=amd64 OS=linux UPX_VERSION=3.95 GHR_VERSION=0.13.0
+      - cf_export ARCH OS UPX_VERSION GHR_VERSION
+      # Major.minor version only
+      - UPX_XY_VERSION="$(echo $UPX_VERSION | cut -d . -f1,2)" GHR_XY_VERSION="$(echo $GHR_VERSION | cut -d . -f1,2)"
+      - cf_export UPX_XY_VERSION GHR_XY_VERSION
+      # Major version only
+      - UPX_X_VERSION="$(echo $UPX_VERSION | cut -d . -f1)" GHR_X_VERSION="$(echo $GHR_VERSION | cut -d . -f1)"
+      - cf_export UPX_X_VERSION GHR_X_VERSION
+
+  build_alpine:
     type: build
     title: Build Alpine image
     dockerfile: Dockerfile-alpine
     image_name: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
     tag: ${{CF_BRANCH}}
     build_arguments:
-    - ARCH=amd64
-    - OS=linux
-    - UPX_VERSION=3.95
-    - GHR_VERSION=0.12.0
+    - ARCH=${{ARCH}}
+    - OS=${{OS}}
+    - UPX_VERSION=${{UPX_VERSION}}
+    - GHR_VERSION=${{GHR_VERSION}}
     when:
       steps:
       - name: main_clone
         on:
         - success
 
-  push_alpine: &push_alpine
+  push_alpine:
     type: push
-    title: Push Alpine image
+    title: Push candidate Docker image
     candidate: ${{build_alpine}}
     image_name: ${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
-    tag: alpine_upx-3_ghr-0.12
+    tag: alpine_upx-${{UPX_X_VERSION}}_ghr-${{GHR_XY_VERSION}}
     when:
       branch:
         only:
