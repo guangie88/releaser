@@ -4,12 +4,12 @@ steps:
     title: Export relevant build arguments
     image: alpine:3.10
     commands:
-    - ARCH=amd64 OS=linux UPX_VERSION=3.95 GHR_VERSION=0.13.0
+    - export ARCH=amd64 OS=linux UPX_VERSION=3.95 GHR_VERSION=0.13.0
     # Major.minor version only
-    - UPX_XY_VERSION="$(echo ${UPX_VERSION} | cut -d . -f1,2)" GHR_XY_VERSION="$(echo ${GHR_VERSION} | cut -d . -f1,2)"
+    - export UPX_XY_VERSION="$(echo ${UPX_VERSION} | cut -d . -f1,2)" GHR_XY_VERSION="$(echo ${GHR_VERSION} | cut -d . -f1,2)"
     - '[ ! -z ${UPX_XY_VERSION} ] || [ ! -z ${GHR_XY_VERSION} ]'  # Check both vars not empty
     # Major version only
-    - UPX_X_VERSION="$(echo ${UPX_VERSION} | cut -d . -f1)" GHR_X_VERSION="$(echo ${GHR_VERSION} | cut -d . -f1)"
+    - export UPX_X_VERSION="$(echo ${UPX_VERSION} | cut -d . -f1)" GHR_X_VERSION="$(echo ${GHR_VERSION} | cut -d . -f1)"
     - '[ ! -z ${UPX_X_VERSION} ] || [ ! -z ${GHR_X_VERSION} ]'  # Check both vars not empty
     - cf_export ARCH OS UPX_VERSION GHR_VERSION UPX_XY_VERSION GHR_XY_VERSION UPX_X_VERSION GHR_X_VERSION
 
