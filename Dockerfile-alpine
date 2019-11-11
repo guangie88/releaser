@@ -1,12 +1,13 @@
-FROM alpine:3.9
+FROM alpine:3.10
 
 ARG ARCH=amd64
 ARG OS=linux
 ARG UPX_VERSION=3.95
-ARG GHR_VERSION=0.12.0
+ARG GHR_VERSION=0.13.0
 
 RUN set -euo pipefail && \
-    apk add --no-cache ca-certificates; \
+    # Good dependencies to have
+    apk add --no-cache ca-certificates curl zip; \
     # upx installation
     wget https://github.com/upx/upx/releases/download/v${UPX_VERSION}/upx-${UPX_VERSION}-${ARCH}_${OS}.tar.xz; \
     tar xvf upx-${UPX_VERSION}-${ARCH}_${OS}.tar.xz; \
